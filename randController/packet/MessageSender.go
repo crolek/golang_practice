@@ -1,7 +1,7 @@
 package packet
 
 import (
-	//"fmt"
+	"fmt"
 	"math/rand"
 	//"strconv"
 	"time"
@@ -14,26 +14,23 @@ type MessageSender struct {
 	randMaker        *rand.Rand
 }
 
-func (me *MessageSender) getRandomInt() int {
+func (me MessageSender) init(max int) {
+	me.channelMaxNumber = max
+	fmt.Println("test")
+}
+
+func (me MessageSender) GetRandomInt() int {
+	//	me.channelMaxNumber = 20
+	//	fmt.Println("Max: " + strconv.Itoa(me.channelMaxNumber))
 	return me.randMaker.Intn(me.channelMaxNumber)
 }
 
-func (me *MessageSender) sendMessage(channel int, seedNumber int64, max int) {
+func (me MessageSender) SendMessage(channel int, seedNumber int64, max int) {
 	me.channelMaxNumber = max
 	me.randMaker = rand.New(rand.NewSource(seedNumber))
 	for {
 
 		time.Sleep(700 * time.Millisecond)
-		mainChannel <- DataMessage{me.channelMaxNumber, channel, me.getRandomInt()}
+		mainChannel <- DataMessage{me.channelMaxNumber, channel, me.GetRandomInt()}
 	}
 }
-
-/*
-func Hello() {
-	fmt.Println("Hello")
-}
-
-func (t *Test) init() {
-	randMaker = rand.New(rand.NewSource(0)) //to initalize the randMaker
-}
-*/
